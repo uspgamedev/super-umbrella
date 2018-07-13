@@ -1,0 +1,315 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://root.gd" type="Script" id=1]
+[ext_resource path="res://res/nestle_tile.tres" type="TileSet" id=2]
+[ext_resource path="res://player_script.gd" type="Script" id=3]
+[ext_resource path="res://res/goblin spritesheet calciumtrice.png" type="Texture" id=4]
+
+[sub_resource type="Animation" id=1]
+
+resource_name = "player_falling"
+length = 1.0
+loop = false
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 22, 24 ]
+}
+
+[sub_resource type="Animation" id=2]
+
+resource_name = "player_idle"
+length = 4.0
+loop = true
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0, 20 ]
+}
+
+[sub_resource type="Animation" id=3]
+
+resource_name = "player_jumping"
+length = 1.0
+loop = false
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 25, 27, 28 ]
+}
+
+[sub_resource type="Animation" id=4]
+
+length = 1.0
+loop = true
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 21, 30 ]
+}
+
+[sub_resource type="RectangleShape2D" id=5]
+
+custom_solver_bias = 0.0
+extents = Vector2( 4, 8.5 )
+
+[node name="root" type="Node" index="0"]
+
+script = ExtResource( 1 )
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="." index="0"]
+
+layer = -1
+offset = Vector2( 0, 0 )
+rotation = 0.0
+scale = Vector2( 1, 1 )
+transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+scroll_offset = Vector2( 0, 0 )
+scroll_base_offset = Vector2( 0, 0 )
+scroll_base_scale = Vector2( 1, 1 )
+scroll_limit_begin = Vector2( 0, 0 )
+scroll_limit_end = Vector2( 0, 0 )
+scroll_ignore_camera_zoom = false
+
+[node name="back-1" type="ParallaxLayer" parent="ParallaxBackground" index="0"]
+
+editor/display_folded = true
+z_index = -2
+z_as_relative = false
+motion_scale = Vector2( 0.99, 0.99 )
+motion_offset = Vector2( 0, 0 )
+motion_mirroring = Vector2( 0, 0 )
+_sections_unfolded = [ "Motion", "Z Index" ]
+
+[node name="background" type="TileMap" parent="ParallaxBackground/back-1" index="0"]
+
+mode = 0
+tile_set = ExtResource( 2 )
+cell_size = Vector2( 16, 16 )
+cell_quadrant_size = 16
+cell_custom_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+cell_half_offset = 2
+cell_tile_origin = 0
+cell_y_sort = false
+cell_clip_uv = false
+collision_use_kinematic = false
+collision_friction = 1.0
+collision_bounce = 0.0
+collision_layer = 0
+collision_mask = 0
+occluder_light_mask = 1
+format = 1
+tile_data = PoolIntArray( 458767, 7, 0, 524294, 7, 0, 524303, 6, 0, 589830, 6, 0, 589839, 6, 0, 589842, 7, 0, 655366, 6, 0, 655375, 6, 0, 655378, 6, 0, 720902, 6, 0, 720911, 6, 0, 720914, 6, 0, 786438, 6, 0, 786447, 6, 0, 786450, 6, 0, 851974, 6, 0, 851986, 6, 0, 917510, 6, 0 )
+_sections_unfolded = [ "Material", "Visibility", "Z Index" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Player" type="KinematicBody2D" parent="." index="1"]
+
+editor/display_folded = true
+position = Vector2( 100, 150 )
+scale = Vector2( 2, 2 )
+input_pickable = false
+collision_layer = 1
+collision_mask = 1
+collision/safe_margin = 0.08
+script = ExtResource( 3 )
+_sections_unfolded = [ "Transform", "Z Index" ]
+
+[node name="Sprite" type="Sprite" parent="Player" index="0"]
+
+editor/display_folded = true
+texture = ExtResource( 4 )
+vframes = 10
+hframes = 10
+frame = 5
+region_rect = Rect2( 10, 72, 300, 24 )
+_sections_unfolded = [ "Animation", "Offset", "Transform" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Player/Sprite" index="0"]
+
+root_node = NodePath("..")
+autoplay = "player_idle"
+playback_process_mode = 1
+playback_default_blend_time = 0.0
+playback_speed = 2.33
+anims/player_falling = SubResource( 1 )
+anims/player_idle = SubResource( 2 )
+anims/player_jumping = SubResource( 3 )
+anims/player_walking = SubResource( 4 )
+blend_times = [  ]
+_sections_unfolded = [ "Playback Options" ]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player" index="1"]
+
+position = Vector2( 0, 7 )
+shape = SubResource( 5 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Camera2D" type="Camera2D" parent="Player" index="2"]
+
+anchor_mode = 1
+rotating = false
+current = true
+zoom = Vector2( 1, 1 )
+limit_left = -10000000
+limit_top = -10000000
+limit_right = 10000000
+limit_bottom = 10000000
+limit_smoothed = false
+drag_margin_h_enabled = true
+drag_margin_v_enabled = true
+smoothing_enabled = false
+smoothing_speed = 5.0
+offset_v = 0.0
+offset_h = 0.0
+drag_margin_left = 0.2
+drag_margin_top = 0.2
+drag_margin_right = 0.2
+drag_margin_bottom = 0.2
+editor_draw_screen = true
+editor_draw_limits = false
+editor_draw_drag_margin = false
+
+[node name="map" type="TileMap" parent="." index="2"]
+
+mode = 0
+tile_set = ExtResource( 2 )
+cell_size = Vector2( 16, 16 )
+cell_quadrant_size = 16
+cell_custom_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+cell_half_offset = 2
+cell_tile_origin = 0
+cell_y_sort = false
+cell_clip_uv = false
+collision_use_kinematic = false
+collision_friction = 1.0
+collision_bounce = 0.0
+collision_layer = 1
+collision_mask = 1
+occluder_light_mask = 1
+format = 1
+tile_data = PoolIntArray( 589845, 27, 0, 589846, 29, 0, 589847, 29, 0, 589848, 29, 0, 589849, 29, 0, 589850, 29, 0, 589851, 29, 0, 589852, 29, 0, 589853, 26, 0, 655381, 21, 0, 655382, 14, 0, 655383, 14, 0, 655384, 14, 0, 655385, 14, 0, 655386, 14, 0, 655387, 14, 0, 655388, 14, 0, 655389, 14, 0, 720908, 27, 0, 720909, 29, 0, 720910, 30, 0, 720911, 30, 0, 720912, 29, 0, 720913, 29, 0, 720914, 29, 0, 720915, 30, 0, 720916, 29, 0, 720917, 26, 0, 720918, 14, 0, 720919, 14, 0, 720920, 14, 0, 720921, 14, 0, 720922, 14, 0, 720923, 14, 0, 720924, 14, 0, 720925, 14, 0, 786444, 5, 0, 786445, 3, 0, 786446, 3, 0, 786447, 3, 0, 786448, 3, 0, 786449, 3, 0, 786450, 3, 0, 786451, 3, 0, 786452, 3, 0, 786453, 14, 0, 786454, 14, 0, 786455, 14, 0, 786456, 14, 0, 786457, 14, 0, 786458, 14, 0, 786459, 14, 0, 786460, 14, 0, 786461, 14, 0, 851972, 536870924, 0, 851974, 536870920, 0, 851976, 536870920, 0, 851978, 536870920, 0, 851979, 29, 0, 851980, 21, 0, 851981, 3, 0, 851982, 3, 0, 851983, 3, 0, 851984, 3, 0, 851985, 3, 0, 851986, 3, 0, 851987, 3, 0, 851988, 3, 0, 851989, 14, 0, 851990, 14, 0, 851991, 14, 0, 851992, 14, 0, 851993, 14, 0, 851994, 14, 0, 851995, 14, 0, 851996, 14, 0, 917508, 21, 0, 917509, 14, 0, 917510, 14, 0, 917511, 14, 0, 917512, 14, 0, 917513, 14, 0, 917514, 14, 0, 917515, 14, 0, 917516, 21, 0, 917517, 3, 0, 917518, 3, 0, 917519, 3, 0, 917520, 3, 0, 917521, 3, 0, 917522, 3, 0, 917523, 3, 0, 917524, 3, 0, 917525, 14, 0, 917526, 14, 0, 917527, 14, 0, 917528, 14, 0, 917529, 14, 0, 917530, 14, 0, 917531, 14, 0, 917532, 14, 0, 983044, 21, 0, 983045, 14, 0, 983046, 14, 0, 983047, 14, 0, 983048, 14, 0, 983049, 14, 0, 983050, 14, 0, 983051, 14, 0, 983052, 21, 0, 983053, 3, 0, 983054, 3, 0, 983055, 3, 0, 983056, 3, 0, 983057, 3, 0, 983058, 3, 0, 983059, 3, 0, 983060, 3, 0, 983061, 14, 0, 983062, 14, 0, 983063, 14, 0, 983064, 14, 0, 983065, 14, 0, 983066, 14, 0, 983067, 14, 0, 983068, 14, 0, 1048580, 21, 0, 1048581, 14, 0, 1048582, 14, 0, 1048583, 14, 0, 1048584, 14, 0, 1048585, 14, 0, 1048586, 14, 0, 1048587, 14, 0, 1048588, 21, 0, 1048589, 3, 0, 1048590, 3, 0, 1048591, 3, 0, 1048592, 3, 0, 1048593, 3, 0, 1048594, 3, 0, 1048595, 3, 0, 1048596, 3, 0, 1048597, 22, 0, 1048598, 14, 0, 1048599, 14, 0, 1048600, 14, 0, 1048601, 14, 0, 1048602, 14, 0, 1114116, 21, 0, 1114117, 14, 0, 1114118, 14, 0, 1114119, 14, 0, 1114120, 14, 0, 1114121, 14, 0, 1114122, 14, 0, 1114123, 14, 0, 1114124, 5, 0, 1114125, 3, 0, 1114126, 14, 0, 1114127, 14, 0, 1114128, 3, 0, 1114129, 3, 0, 1114130, 3, 0, 1114131, 3, 0, 1114132, 3, 0, 1114133, 22, 0, 1114136, 14, 0, 1114137, 14, 0, 1179652, 21, 0, 1179653, 14, 0, 1179654, 14, 0, 1179655, 14, 0, 1179656, 14, 0, 1179657, 14, 0, 1179658, 14, 0, 1179659, 14, 0, 1179660, 21, 0, 1179661, 14, 0, 1179662, 14, 0, 1179663, 14, 0, 1179664, 14, 0, 1179665, 14, 0, 1179666, 14, 0, 1179667, 14, 0, 1179668, 14, 0, 1179669, 22, 0, 1245188, 21, 0, 1245189, 14, 0, 1245190, 14, 0, 1245191, 14, 0, 1245192, 14, 0, 1245193, 14, 0, 1245194, 14, 0, 1245195, 14, 0, 1245196, 21, 0, 1245197, 14, 0, 1245198, 14, 0, 1245199, 14, 0, 1245200, 14, 0, 1245201, 14, 0, 1245202, 14, 0, 1245203, 14, 0, 1245204, 14, 0, 1245205, 22, 0, 1310724, 21, 0, 1310725, 14, 0, 1310726, 14, 0, 1310727, 14, 0, 1310728, 14, 0, 1310729, 14, 0, 1310730, 14, 0, 1310731, 14, 0, 1310732, 21, 0, 1310733, 14, 0, 1310734, 14, 0, 1310735, 14, 0, 1310736, 14, 0, 1310737, 14, 0, 1310738, 14, 0, 1310739, 14, 0, 1310740, 14, 0, 1310741, 22, 0, 1376260, 21, 0, 1376261, 14, 0, 1376262, 14, 0, 1376263, 14, 0, 1376264, 14, 0, 1376265, 14, 0, 1376266, 14, 0, 1376267, 14, 0, 1376268, 21, 0, 1376269, 14, 0, 1376270, 14, 0, 1376271, 14, 0, 1376272, 14, 0, 1376273, 14, 0, 1376274, 14, 0, 1376275, 14, 0, 1376276, 14, 0, 1376277, 22, 0, 1441796, 21, 0, 1441797, 14, 0, 1441798, 14, 0, 1441799, 14, 0, 1441800, 14, 0, 1441801, 14, 0, 1441802, 14, 0, 1441803, 14, 0, 1441804, 21, 0, 1441805, 14, 0, 1441806, 14, 0, 1441807, 14, 0, 1441808, 14, 0, 1441809, 14, 0, 1441810, 14, 0, 1441811, 14, 0, 1441812, 14, 0, 1441813, 22, 0, 1507332, 21, 0, 1507333, 14, 0, 1507334, 14, 0, 1507335, 14, 0, 1507336, 14, 0, 1507337, 14, 0, 1507338, 14, 0, 1507339, 14, 0, 1507340, 21, 0, 1507341, 14, 0, 1507342, 14, 0, 1507343, 14, 0, 1507344, 14, 0, 1507345, 14, 0, 1507346, 14, 0, 1507347, 14, 0, 1507348, 14, 0, 1507349, 22, 0, 1572868, 21, 0, 1572869, 14, 0, 1572870, 14, 0, 1572871, 14, 0, 1572872, 14, 0, 1572873, 14, 0, 1572874, 14, 0, 1572875, 14, 0, 1572876, 21, 0, 1572877, 14, 0, 1572878, 14, 0, 1572879, 14, 0, 1572880, 14, 0, 1572881, 14, 0, 1572882, 14, 0, 1572883, 14, 0, 1572884, 14, 0, 1572885, 22, 0, 1638404, 21, 0, 1638405, 14, 0, 1638406, 14, 0, 1638407, 14, 0, 1638408, 14, 0, 1638409, 14, 0, 1638410, 14, 0, 1638411, 14, 0, 1638412, 21, 0, 1638413, 14, 0, 1638414, 14, 0, 1638415, 14, 0, 1638416, 14, 0, 1638417, 14, 0, 1638418, 14, 0, 1638419, 14, 0, 1638420, 14, 0, 1638421, 22, 0, 1703940, 21, 0, 1703941, 14, 0, 1703942, 14, 0, 1703943, 14, 0, 1703944, 14, 0, 1703945, 14, 0, 1703946, 14, 0, 1703947, 14, 0, 1703948, 21, 0, 1703949, 14, 0, 1703950, 14, 0, 1703951, 14, 0, 1703952, 14, 0, 1703953, 14, 0, 1703954, 14, 0, 1703955, 14, 0, 1703956, 14, 0, 1703957, 22, 0, 1769476, 21, 0, 1769477, 14, 0, 1769478, 14, 0, 1769479, 14, 0, 1769480, 14, 0, 1769481, 14, 0, 1769482, 14, 0, 1769483, 14, 0, 1769484, 21, 0, 1769485, 14, 0, 1769486, 14, 0, 1769487, 14, 0, 1769488, 14, 0, 1769489, 14, 0, 1769490, 14, 0, 1769491, 14, 0, 1769492, 14, 0, 1769493, 22, 0, 1835012, 21, 0, 1835013, 14, 0, 1835014, 14, 0, 1835015, 14, 0, 1835016, 14, 0, 1835017, 14, 0, 1835018, 14, 0, 1835019, 14, 0, 1835020, 21, 0, 1835021, 14, 0, 1835022, 14, 0, 1835023, 14, 0, 1835024, 14, 0, 1835025, 14, 0, 1835026, 14, 0, 1835027, 14, 0, 1835028, 14, 0, 1835029, 22, 0, 1900548, 21, 0, 1900549, 14, 0, 1900550, 14, 0, 1900551, 14, 0, 1900552, 14, 0, 1900553, 14, 0, 1900554, 14, 0, 1900555, 14, 0, 1900556, 21, 0, 1900557, 14, 0, 1900558, 14, 0, 1900559, 14, 0, 1900560, 14, 0, 1900561, 14, 0, 1900562, 14, 0, 1900563, 14, 0, 1900564, 14, 0, 1900565, 22, 0, 1966101, 22, 0 )
+_sections_unfolded = [ "Material", "Visibility" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="ParallaxForeground" type="ParallaxBackground" parent="." index="3"]
+
+layer = 0
+offset = Vector2( 0, 0 )
+rotation = 0.0
+scale = Vector2( 1, 1 )
+transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+scroll_offset = Vector2( 0, 0 )
+scroll_base_offset = Vector2( 0, 0 )
+scroll_base_scale = Vector2( 1, 1 )
+scroll_limit_begin = Vector2( 0, 0 )
+scroll_limit_end = Vector2( 0, 0 )
+scroll_ignore_camera_zoom = false
+
+[node name="front-1" type="ParallaxLayer" parent="ParallaxForeground" index="0"]
+
+editor/display_folded = true
+z_index = 1
+z_as_relative = false
+motion_scale = Vector2( 1.01, 1.01 )
+motion_offset = Vector2( 0, 0 )
+motion_mirroring = Vector2( 0, 0 )
+_sections_unfolded = [ "Motion" ]
+
+[node name="foreground" type="TileMap" parent="ParallaxForeground/front-1" index="0"]
+
+mode = 0
+tile_set = ExtResource( 2 )
+cell_size = Vector2( 16, 16 )
+cell_quadrant_size = 16
+cell_custom_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+cell_half_offset = 2
+cell_tile_origin = 0
+cell_y_sort = false
+cell_clip_uv = false
+collision_use_kinematic = false
+collision_friction = 1.0
+collision_bounce = 0.0
+collision_layer = 0
+collision_mask = 0
+occluder_light_mask = 1
+format = 1
+tile_data = PoolIntArray( 851984, 28, 0, 917520, 6, 0, 983050, 28, 0, 983056, 6, 0, 1048586, 23, 0, 1048592, 6, 0, 1114128, 6, 0 )
+_sections_unfolded = [ "Material", "Visibility" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="front-2" type="ParallaxLayer" parent="ParallaxForeground" index="1"]
+
+z_index = 2
+z_as_relative = false
+motion_scale = Vector2( 1.03, 1.03 )
+motion_offset = Vector2( 0, 0 )
+motion_mirroring = Vector2( 0, 0 )
+_sections_unfolded = [ "Motion", "Transform", "Z Index" ]
+
+[node name="foreground" type="TileMap" parent="ParallaxForeground/front-2" index="0"]
+
+mode = 0
+tile_set = ExtResource( 2 )
+cell_size = Vector2( 16, 16 )
+cell_quadrant_size = 16
+cell_custom_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+cell_half_offset = 2
+cell_tile_origin = 0
+cell_y_sort = false
+cell_clip_uv = false
+collision_use_kinematic = false
+collision_friction = 1.0
+collision_bounce = 0.0
+collision_layer = 0
+collision_mask = 0
+occluder_light_mask = 1
+format = 1
+tile_data = PoolIntArray( 1048585, 11, 0, 1048590, 9, 0, 1114119, 27, 0, 1114120, 30, 0, 1114121, 29, 0, 1114122, 30, 0, 1114123, 30, 0, 1114124, 29, 0, 1114125, 29, 0, 1114126, 30, 0, 1114127, 29, 0, 1114128, 30, 0, 1114129, 26, 0, 1179655, 5, 0, 1179656, 14, 0, 1179657, 14, 0, 1179658, 14, 0, 1179659, 14, 0, 1179660, 14, 0, 1179661, 14, 0, 1179662, 14, 0, 1179663, 14, 0, 1179664, 14, 0, 1179665, 22, 0, 1245191, 5, 0, 1245192, 14, 0, 1245193, 3, 0, 1245194, 14, 0, 1245195, 17, 0, 1245196, 15, 0, 1245197, 15, 0, 1245198, 15, 0, 1245199, 15, 0, 1245200, 18, 0, 1245201, 22, 0, 1310727, 5, 0, 1310728, 14, 0, 1310729, 4, 0, 1310730, 15, 0, 1310731, 14, 0, 1310732, 14, 0, 1310733, 14, 0, 1310734, 3, 0, 1310735, 3, 0, 1310736, 22, 0, 1310737, 22, 0, 1376262, 17, 0, 1376263, 3, 0, 1376264, 14, 0, 1376265, 21, 0, 1376266, 3, 0, 1376267, 3, 0, 1376268, 3, 0, 1376269, 3, 0, 1376270, 3, 0, 1376271, 3, 0, 1376272, 22, 0, 1376273, 22, 0, 1441798, 21, 0, 1441799, 3, 0, 1441800, 14, 0, 1441801, 21, 0, 1441802, 3, 0, 1441803, 3, 0, 1441804, 3, 0, 1441805, 14, 0, 1441806, 14, 0, 1441807, 14, 0, 1441808, 22, 0, 1441809, 22, 0, 1507334, 21, 0, 1507335, 3, 0, 1507336, 14, 0, 1507337, 21, 0, 1507338, 3, 0, 1507339, 14, 0, 1507340, 14, 0, 1507341, 14, 0, 1507342, 14, 0, 1507343, 14, 0, 1507344, 22, 0, 1507345, 22, 0, 1572870, 21, 0, 1572871, 3, 0, 1572872, 4, 0, 1572873, 3, 0, 1572874, 14, 0, 1572875, 14, 0, 1572876, 14, 0, 1572877, 14, 0, 1572878, 14, 0, 1572879, 14, 0, 1572880, 22, 0, 1572881, 22, 0, 1638406, 5, 0, 1638407, 27, 0, 1638408, 30, 0, 1638409, 30, 0, 1638410, 29, 0, 1638411, 26, 0, 1638412, 14, 0, 1638413, 14, 0, 1638414, 14, 0, 1638415, 14, 0, 1638416, 22, 0, 1638417, 22, 0, 1703941, 27, 0, 1703942, 30, 0, 1703943, 29, 0, 1703944, 26, 0, 1703945, 3, 0, 1703946, 3, 0, 1703947, 22, 0, 1703948, 14, 0, 1703949, 14, 0, 1703950, 14, 0, 1703951, 14, 0, 1703952, 22, 0, 1703953, 22, 0, 1769477, 5, 0, 1769478, 3, 0, 1769479, 3, 0, 1769480, 3, 0, 1769481, 3, 0, 1769482, 3, 0, 1769483, 22, 0, 1769484, 14, 0, 1769485, 14, 0, 1769486, 14, 0, 1769487, 14, 0, 1769488, 22, 0, 1769489, 22, 0, 1835013, 5, 0, 1835014, 3, 0, 1835015, 3, 0, 1835016, 3, 0, 1835017, 3, 0, 1835018, 3, 0, 1835019, 22, 0, 1835020, 14, 0, 1835021, 14, 0, 1835022, 14, 0, 1835023, 14, 0, 1835024, 22, 0, 1835025, 22, 0, 1900549, 5, 0, 1900550, 3, 0, 1900551, 3, 0, 1900552, 3, 0, 1900553, 3, 0, 1900554, 3, 0, 1900555, 22, 0, 1900556, 14, 0, 1900557, 14, 0, 1900558, 14, 0, 1900559, 14, 0, 1900560, 22, 0, 1900561, 22, 0 )
+_sections_unfolded = [ "Material", "Visibility" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+
